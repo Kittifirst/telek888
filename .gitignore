@@ -1,0 +1,15 @@
+build/
+install/
+log/
+*.bag
+*.db3
+*.pt
+*.onnx
+*.zip
+*.mp4
+*.whl
+dataset/
+__pycache__/
+.vscode/
+venv/
+.env/

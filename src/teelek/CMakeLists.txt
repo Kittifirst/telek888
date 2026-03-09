@@ -51,11 +51,13 @@ install(PROGRAMS
   src/play_control.py
   src/robot_movement.py
   src/vision_control.py
-  src/camera_april_tag_calibrate.py
+  src/camera_apriltag.py
   src/mission_node.py
   src/motion_node.py
   src/plant_node.py
-  src/return_to_origin_node.py
+  src/scan_cabbage.py
+  src/tag_follower_node.py
+  src/robot_plotter.py
 
   DESTINATION lib/${PROJECT_NAME}
 )

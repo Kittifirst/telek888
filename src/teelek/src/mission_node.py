@@ -26,9 +26,15 @@ class MissionNode(Node):
             self.plant_done_callback,
             10)
 
+        self.create_subscription(
+            Float32,
+            "/teelek/plant_distance",
+            self.plant_distance_callback,
+            10)
+
         self.total_rounds = 2
         self.current_round = 0
-        self.distance_to_move = 20.0
+        self.distance_to_move = 0
 
         self.timer = self.create_timer(1.0, self.delayed_start)
         self.started = False
@@ -49,6 +55,10 @@ class MissionNode(Node):
             plant_msg = Bool()
             plant_msg.data = True
             self.plant_pub.publish(plant_msg)
+
+    def plant_distance_callback(self, msg):
+        self.distance_to_move = msg.data
+        self.get_logger().info(f"Received distance: {self.distance_to_move}")
 
     def plant_done_callback(self, msg):
         if msg.data:

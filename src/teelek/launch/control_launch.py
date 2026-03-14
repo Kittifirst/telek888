@@ -35,6 +35,15 @@ def generate_launch_description():
         name="Joystick_Node",
         # output="screen",
         namespace="",
+        
+    )
+
+    xbox_stick_control = Node(
+        package="teelek",
+        executable="xbox_control.py",
+        name="Joystick_Node",
+        # output="screen",
+        namespace="",
     )
 
     # movement_launch = IncludeLaunchDescription(
@@ -45,7 +54,8 @@ def generate_launch_description():
     
     
     ld.add_action(joy)
-    ld.add_action(joystick_control)
+    # ld.add_action(joystick_control)
+    ld.add_action(xbox_stick_control)
     # ld.add_action(movement_launch)
 
     return ld

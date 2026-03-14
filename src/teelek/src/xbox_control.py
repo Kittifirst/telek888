@@ -60,10 +60,10 @@ class Joystick(Node):
         self.gamepad.lx = float(msg.axes[0] * -1)      # Left Stick X
         self.gamepad.ly = float(msg.axes[1])           # Left Stick Y
 
-        self.gamepad.rx = float(msg.axes[2] * -1)      # ✅ Right Stick X (หมุน)
-        self.gamepad.ry = float(msg.axes[3])           # Right Stick Y
+        self.gamepad.rx = float(msg.axes[3] * -1)      # ✅ Right Stick X (หมุน)
+        self.gamepad.ry = float(msg.axes[4])           # Right Stick Y
 
-        self.gamepad.l2 = float((msg.axes[4] + 1) / 2) # LT 0..1
+        self.gamepad.l2 = float((msg.axes[2] + 1) / 2) # LT 0..1
         self.gamepad.r2 = float((msg.axes[5] + 1) / 2) # RT 0..1
 
         self.gamepad.dpadLeftRight = float(msg.axes[6])
@@ -91,17 +91,25 @@ class Joystick(Node):
         cmd_vel_move = Twist()
         cmd_encoder = Twist()
 
-        # Wheel movement
-        cmd_vel_move.linear.x = float(self.gamepad.ly * self.maxspeed)
-        cmd_vel_move.linear.y = float(self.gamepad.lx * self.maxspeed * -1)
-        cmd_vel_move.angular.z = float(self.gamepad.rx * self.maxspeed * -1)
+        # ===== Robot velocity =====
+        vx = self.gamepad.ly * self.maxspeed
+        vy = self.gamepad.lx * self.maxspeed * -1
+        wz = self.gamepad.rx * self.maxspeed * -1
 
-        # Encoder Setpoint
-        cmd_encoder.linear.x = float(self.gamepad.button_menu * self.resetencoder)
-        
+        # ===== Mecanum inverse kinematics =====
+        fl = vx - wz
+        fr = vx + wz
+        bl = vx - wz
+        br = vx + wz
+
+        # ===== Send to Twist =====
+        cmd_vel_move.linear.x  = float(fl)
+        cmd_vel_move.linear.y  = float(fr)
+        cmd_vel_move.linear.z  = float(bl)
+        cmd_vel_move.angular.x = float(br)
+
         # Publish
         self.pub_move.publish(cmd_vel_move)
-        self.pub_encoder.publish(cmd_encoder)
 
 def main():
     rclpy.init()

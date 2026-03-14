@@ -31,9 +31,33 @@ def generate_launch_description():
         output='screen'
     )
 
+    go_to_pose = Node(
+        package='teelek',
+        executable='go_to_pose.py',
+        name='PoseGoTo',
+        output='screen'
+    )
+
+    mission_pose = Node(
+        package='teelek',
+        executable='mission_pose.py',
+        name='MissionNode',
+        output='screen'
+    )
+
+    main_control = Node(
+        package='teelek',
+        executable='main_control.py',
+        name='main_control',
+        output='screen'
+    )
+
     return LaunchDescription([
         motion_node,
         cameraapriltag_node,
         tag_follower,
-        # robot_plotter
+        robot_plotter,
+        go_to_pose,
+        main_control,
+        # mission_pose
     ])

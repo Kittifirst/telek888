@@ -14,7 +14,7 @@ class OdomPlotterNode(Node):
         # Subscription รับค่าจาก AprilTag node ของคุณ
         self.subscription = self.create_subscription(
             Pose2D,
-            '/robot_pose_world',
+            '/camera/camera_pose',
             self.pose_callback,
             10)
 
@@ -41,7 +41,7 @@ class OdomPlotterNode(Node):
         # รับค่า x, y, theta (องศา) จาก node apriltag
         self.robot_x = msg.x
         self.robot_y = msg.y
-        self.robot_yaw = msg.theta
+        self.robot_yaw = math.degrees(msg.theta)
         self.received_first_data = True
 
     def update_plot(self):
@@ -71,7 +71,7 @@ class OdomPlotterNode(Node):
 
         # 4. ตั้งค่าขอบเขตกราฟ (เน้นฝั่ง -x ตามโจทย์)
         # แสดงผลครอบคลุม X ตั้งแต่ -1.5m ถึง 0.5m และ Y ตั้งแต่ -1m ถึง 1m
-        self.ax.set_xlim([-1.5, -0.4])
+        self.ax.set_xlim([-1.5, 0.0])
         self.ax.set_ylim([-1.5, 1.5])
         
         # เพิ่มเส้นแกนกลาง

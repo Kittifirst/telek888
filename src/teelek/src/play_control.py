@@ -88,20 +88,29 @@ class Joystick(Node):
             self.gamepad.reset_toggles()
 
     def sendData(self):
+
         cmd_vel_move = Twist()
         cmd_encoder = Twist()
 
-        # Wheel movement
-        cmd_vel_move.linear.x = float(self.gamepad.ly * self.maxspeed)
-        cmd_vel_move.linear.y = float(self.gamepad.lx * self.maxspeed * -1)
-        cmd_vel_move.angular.z = float(self.gamepad.rx * self.maxspeed * -1)
+        # ===== Robot velocity =====
+        vx = self.gamepad.ly * self.maxspeed
+        vy = self.gamepad.lx * self.maxspeed * -1
+        wz = self.gamepad.rx * self.maxspeed * -1
 
-        # Encoder Setpoint
-        cmd_encoder.linear.x = float(self.gamepad.button_menu * self.resetencoder)
-        
+        # ===== Mecanum inverse kinematics =====
+        fl = vx - vy - wz
+        fr = vx + vy + wz
+        bl = vx + vy - wz
+        br = vx - vy + wz
+
+        # ===== Send to Twist =====
+        cmd_vel_move.linear.x  = float(fl)
+        cmd_vel_move.linear.y  = float(fr)
+        cmd_vel_move.linear.z  = float(bl)
+        cmd_vel_move.angular.x = float(br)
+
         # Publish
         self.pub_move.publish(cmd_vel_move)
-        self.pub_encoder.publish(cmd_encoder)
 
 def main():
     rclpy.init()

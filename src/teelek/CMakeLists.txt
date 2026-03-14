@@ -34,8 +34,17 @@ find_package(ament_index_cpp REQUIRED)
 # Install
 ################################################################################
 install(
-  DIRECTORY launch src config
+  DIRECTORY launch src config utils
   DESTINATION share/${PROJECT_NAME}
+)
+
+
+################################################################################
+# Install Python Modules (โฟลเดอร์ utils)
+################################################################################
+install(
+  DIRECTORY utils
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ################################################################################
@@ -49,8 +58,6 @@ install(
 install(PROGRAMS
   src/xbox_control.py
   src/play_control.py
-  src/robot_movement.py
-  src/vision_control.py
   src/camera_apriltag.py
   src/mission_node.py
   src/motion_node.py
@@ -58,6 +65,9 @@ install(PROGRAMS
   src/scan_cabbage.py
   src/tag_follower_node.py
   src/robot_plotter.py
+  src/go_to_pose.py
+  src/mission_pose.py
+  src/main_control.py
 
   DESTINATION lib/${PROJECT_NAME}
 )

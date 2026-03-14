@@ -21,7 +21,7 @@ class MotionNode(Node):
         self.MAX_TICK_RATE = (self.MAX_RPM / 60.0) * self.MOTOR_TICKS_PER_REV
         
         self.error_distance_tolerance = 0.01 # 0.5 cm
-        self.error_angle_tolerance = math.radians(3) # 1 degree
+        self.error_angle_tolerance = math.radians(1) # 1 degree
         
         kf = 1023.0 / 85.0
         self.pids = [

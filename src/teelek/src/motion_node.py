@@ -22,14 +22,17 @@ class MotionNode(Node):
             Float32, "/teelek/robot_distance", 10)
 
         self.cmd_pub = self.create_publisher(
-            Twist, "/teelek/cmd_move", 10)
+            Twist, "/teelek/cmd_motion", 10)
 
         self.motion_done_pub = self.create_publisher(
             Bool, "/teelek/motion_done", 10)
 
         self.move_done_pub = self.create_publisher(
             Bool, "/teelek/move_done", 10)
-
+        
+        self.move_start_pub = self.create_publisher(
+            Bool, "/teelek/move_start", 10)
+        
         # ---------------- Subscribers ----------------
         self.create_subscription(
             Float32MultiArray,
@@ -108,9 +111,9 @@ class MotionNode(Node):
 
         avg_delta = sum(delta_ticks) / 4.0
 
-        distance_mm = (
-            avg_delta / tick_per_revolution
-        ) * circumference
+        scale = 1.3
+
+        distance_mm = (avg_delta / tick_per_revolution) * circumference * scale
 
         self.robot_distance += mm_to_cm(distance_mm)
 
@@ -145,7 +148,7 @@ class MotionNode(Node):
 
                 pwm = self.Kp * error
 
-                min_pwm = 700.0
+                min_pwm = 600.0
 
                 if abs(pwm) < min_pwm:
                     pwm = min_pwm if pwm > 0 else -min_pwm
@@ -161,7 +164,6 @@ class MotionNode(Node):
             cmd.angular.x = pwm
 
         else:
-
             cmd.linear.x = 0.0
             cmd.linear.y = 0.0
             cmd.linear.z = 0.0
@@ -178,6 +180,7 @@ class MotionNode(Node):
 
         self.motion_done_pub.publish(msg)
         self.move_done_pub.publish(msg)
+        self.move_start_pub.publish(msg)
 
 
 def main():

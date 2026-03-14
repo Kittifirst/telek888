@@ -24,8 +24,16 @@ def generate_launch_description():
         output='screen'
     )
 
+    scancabbage_node = Node(
+        package='teelek',
+        executable='scan_cabbage.py',
+        name='scancabbage_node',
+        output='screen'
+    )
+
     return LaunchDescription([
-        motion_node,
+        # motion_node,
         mission_node,
-        plant_node
+        plant_node,
+        # scancabbage_node
     ])

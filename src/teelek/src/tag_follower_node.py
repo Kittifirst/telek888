@@ -121,8 +121,6 @@ class TagFollower(Node):
 
         # ===== WAIT MOTION =====
         if not self.mission_started:
-
-            self.pub_motor.publish(Twist())
             return
 
         # ===== SEARCH TAG =====
@@ -218,17 +216,19 @@ class TagFollower(Node):
         # ===== STOP =====
         elif self.state == "STOP":
 
-            self.pub_motor.publish(Twist())
-
             if not self.ultra_sent:
 
+                self.pub_motor.publish(Twist())
+
                 msg = Float32()
-                msg.data = 20.0
+                msg.data = 23.0
                 self.pub_ultra_success.publish(msg)
 
                 self.get_logger().info("Ultra success sent")
 
                 self.ultra_sent = True
+
+            return
 
     # ================= MOTOR =================
 

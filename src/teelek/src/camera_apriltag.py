@@ -96,7 +96,7 @@ class Camera_apriltag(Node):
         self.tag_size = 0.042
 
         self.cam_offset_x = 0.00
-        self.cam_offset_y = 0.11 + 0.04
+        self.cam_offset_y = 0.08 + 0.04
 
         self.filtered_x=0.0
         self.filtered_y=0.0
@@ -205,7 +205,7 @@ class Camera_apriltag(Node):
             raw_y=t_inv[1][0]
 
             robot_x=raw_x-self.cam_offset_x
-            robot_y=raw_y-self.cam_offset_y+0.11
+            robot_y=raw_y-self.cam_offset_y+0.08
 
             robot_y-=pixel_error_x*raw_x*0.25
 
@@ -296,9 +296,9 @@ class Camera_apriltag(Node):
 
     def publish_tag_array(self,tag_id):
 
-        first=(tag_id//1000)/100
-        middle=((tag_id%1000)//100)/100
-        last=(tag_id%100)/100
+        first=(tag_id//1000)
+        middle=((tag_id%1000)//100)
+        last=(tag_id%100)
 
         msg1=Float32()
         msg2=Float32()

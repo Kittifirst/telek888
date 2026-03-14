@@ -52,6 +52,21 @@ def generate_launch_description():
         output='screen'
     )
 
+    mission_node = Node(
+        package='teelek',
+        executable='mission_node.py',
+        name='mission_node',
+        output='screen'
+    )
+
+    plant_node = Node(
+        package='teelek',
+        executable='plant_node.py',
+        name='plant_node',
+        output='screen'
+    )
+
+
     return LaunchDescription([
         motion_node,
         cameraapriltag_node,
@@ -59,5 +74,7 @@ def generate_launch_description():
         robot_plotter,
         go_to_pose,
         main_control,
+        # mission_node,
+        # plant_node,
         # mission_pose
     ])
